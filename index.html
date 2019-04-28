@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Autosys Tools</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="app.css">
+    <script>require('./node_modules/materialize-css/dist/js/materialize.min.js')</script>
+</head>
+
+<body>
+    <div class="container-fluid" style="padding-left: 1em; padding-right: 1em;" id="mainDiv">
+        <div class="row">
+            <div class="col s12 no-pd">
+                <ul class="tabs tabs-icon" id="tabs">
+                    <li class="tab col s3"><a class="active" href="#view"><i class="material-icons">receipt</i>view
+                            jobs</a></li>
+                    <li class="tab col s3"><a href="#upload"><i class="material-icons">queue</i>upload
+                            jobs</a></li>
+                    <li class="tab col s3"><a href="#settings"><i class="material-icons">settings</i>settings</a></li>
+                </ul>
+            </div>
+            <div id="view" class="col s12">
+                <div class="row">
+                    <div class="col-m-12">
+                        <div class="card">
+                            <div class="card-content" style="height: calc(100vh - 8em); min-height: 500px;">
+                                <span class="card-title">View Jobs</span>
+                                <div class="row">
+                                    <div class="input-field col s5">
+                                        <select id="envOptions">
+                                        </select>
+                                        <label>Environment</label>
+                                    </div>
+                                    <div class="input-field col s5">
+                                        <select id="appOptions">
+                                        </select>
+                                        <label>Application</label>
+                                    </div>
+                                    <div class="input-field col s2">
+                                        <a class="waves-effect waves-light btn green"
+                                            onclick="actionNavigateToJobStatus()"><i
+                                                class="material-icons left">arrow_forward</i>open</a>
+                                    </div>
+                                </div>
+                                <div class="card-panel"
+                                    style="height: calc(80vh - 11em); display:block; overflow: auto; ">
+                                    <!-- white-space: nowrap; -->
+                                    <div>
+                                        <object id="jobstatus" type="text/html"
+                                            style="width: 100%; height: calc(80vh - 15em);"></object>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="upload" class="col s12">
+                <div class="row">
+                    <div class="col-m-12">
+                        <div class="card">
+                            <div class="card-content" style="height: calc(100vh - 13em); min-height: 400px;">
+                                <span class="card-title">Upload Job</span>
+                                <div class="input-field">
+                                    <select id="uploadEnvOptions">
+                                        <option value="" disabled selected>Select an environment</option>
+                                    </select>
+                                    <label>Environment</label>
+                                </div>
+                                <div class="file-field input-field">
+                                    <div class="btn">
+                                        <span>select jil File</span>
+                                        <input type="file" id="jil">
+                                    </div>
+                                    <div class="file-path-wrapper">
+                                        <input class="file-path validate" type="text">
+                                    </div>
+                                </div>
+                                <div id="outc" class="card-panel black"
+                                    style="height: calc(80vh - 13em); display:block; overflow: auto; ">
+                                    <!-- white-space: nowrap; -->
+                                    <pre class="white-text" id="alltext">
+                                    </pre>
+                                </div>
+                            </div>
+                            <div class="card-action">
+                                <a class="waves-effect waves-light btn green" onclick="actionUploadJob()"><i
+                                        class="material-icons left">file_upload</i>Upload
+                                    Job</a>
+                                <a class="waves-effect waves-light btn red" onclick="actionClearConsole()"><i
+                                        class="material-icons left">clear_all</i>Clear
+                                    Logs</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="settings" class="col s12">
+                <div class="row">
+                    <div class="col s6">
+                        <div class="card">
+                            <div class="card-content"
+                                style="height: calc(100vh - 8em); min-height: 500px; overflow: auto;">
+                                <span class="card-title">Environments</span>
+                                <div class="row">
+                                    <div class="col-m-6" id="envTableContainer">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col s6">
+                        <div class="card">
+                            <div class="card-content"
+                                style="height: calc(100vh - 8em); min-height: 500px; overflow: auto;">
+                                <span class="card-title">Applications</span>
+                                <div class="row">
+                                    <div class="col-m-6" id="appTableContainer">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="fixed-action-btn">
+                    <a class="btn-floating btn-large red">
+                        <i class="large material-icons">add</i>
+                    </a>
+                    <!--  <a class="btn tooltipped" data-position="bottom" data-tooltip="I am a tooltip">Hover me!</a> -->
+                    <ul>
+                        <li><a class="btn-floating blue darken-1 tooltipped" data-tooltip="About"
+                                onclick="actionAbout()"><i class="material-icons">info_outline</i></a></li>
+                        <li><a class="btn-floating lime darken-1 tooltipped modal-trigger"
+                                data-tooltip="Add Application" data-target="appModal"><i
+                                    class="material-icons">note_add</i></a></li>
+
+                        <li><a class="btn-floating green darken-1 tooltipped modal-trigger"
+                                data-tooltip="Add Environment" data-target="envModal"><i
+                                    class="material-icons">add_to_queue</i></a></li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal to add application  -->
+    <div id="appModal" class="modal">
+        <div class="modal-content">
+            <div class="row">
+                <h6>Add Application</h6>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="appId" type="text">
+                        <label for="appId">Id</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="appName" type="text">
+                        <label for="appName">Name</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a class="waves-effect waves-green btn green" onclick="actionAddApplication()"><i
+                    class="material-icons left">save</i>Save</a>
+            <a class="modal-close waves-effect waves-green btn red"><i class="material-icons left">close</i>Close</a>
+        </div>
+    </div>
+
+    <!-- Modal to add environment  -->
+    <div id="envModal" class="modal">
+        <div class="modal-content">
+            <div class="row">
+                <h6>Add Environment</h6>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="envId" type="text">
+                        <label for="envId">Id</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="envName" type="text">
+                        <label for="envName">Name</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a class="waves-effect waves-green btn green" onclick="actionAddEnvironment()"><i
+                    class="material-icons left">save</i>Save</a>
+            <a class="modal-close waves-effect waves-green btn red"><i class="material-icons left">close</i>Close</a>
+        </div>
+    </div>
+</body>
+<script> require('./index.js')</script>
+
+</html>

@@ -1,0 +1,23 @@
+{
+  "name": "autosys-tools",
+  "version": "1.0.0",
+  "description": "Autosys Tool to upload and manage JIL files",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "keywords": [
+    "autosys",
+    "jil"
+  ],
+  "author": "Manoj Kumar Gupta",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^4.1.1",
+    "electron-builder": "^20.39.0"
+  },
+  "dependencies": {
+    "custom-electron-titlebar": "^3.0.8",
+    "materialize-css": "^1.0.0-rc.2"
+  }
+}
